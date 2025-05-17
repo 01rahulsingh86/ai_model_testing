@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loan Prediction</title>
+</head>
+<body>
+  <h1>Loan Approval Predictor</h1>
+
+  <label>Age: <input type="number" id="age" /></label><br/>
+  <label>Income: <input type="number" id="income" /></label><br/>
+  <label>Credit Score: <input type="number" id="credit" /></label><br/>
+
+  <button onclick="predict()">Predict</button>
+
+  <h2 id="result"></h2>
+
+  <script>
+    async function predict() {
+      const input = [
+        parseFloat(document.getElementById('age').value),
+        parseFloat(document.getElementById('income').value)
+      ];
+
+      const response = await fetch("http://127.0.0.1:8000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ input: input })
+      });
+
+      const data = await response.json();
+      document.getElementById('result').innerText = `Prediction: ${data.prediction}`;
+    }
+  </script>
+</body>
+</html>
+
